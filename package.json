@@ -2,14 +2,14 @@
   "name": "text-utilities",
   "displayName": "Text Utilities",
   "description": "Useful text manipulation utilities for developers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "jongson-won",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
   "categories": ["Other", "Formatters"],
-  "keywords": ["text", "utilities", "case", "conversion", "uuid", "base64", "transform"],
+  "keywords": ["text", "utilities", "case", "conversion", "uuid", "base64", "transform", "sort", "json"],
   "repository": {
     "type": "git",
     "url": "https://github.com/Jongson-Won/my-vscode-extension.git"
@@ -70,6 +70,38 @@
       {
         "command": "text-utilities.base64Decode",
         "title": "Base64 Decode"
+      },
+      {
+        "command": "text-utilities.sortLines",
+        "title": "Sort Lines Ascending"
+      },
+      {
+        "command": "text-utilities.sortLinesReverse",
+        "title": "Sort Lines Descending"
+      },
+      {
+        "command": "text-utilities.removeDuplicateLines",
+        "title": "Remove Duplicate Lines"
+      },
+      {
+        "command": "text-utilities.trimLines",
+        "title": "Trim Lines"
+      },
+      {
+        "command": "text-utilities.formatJson",
+        "title": "Format JSON"
+      },
+      {
+        "command": "text-utilities.minifyJson",
+        "title": "Minify JSON"
+      },
+      {
+        "command": "text-utilities.reverseText",
+        "title": "Reverse Text"
+      },
+      {
+        "command": "text-utilities.numberLines",
+        "title": "Number Lines"
       }
     ],
     "keybindings": [
@@ -83,6 +115,12 @@
         "command": "text-utilities.toLowerCase",
         "key": "ctrl+shift+l",
         "mac": "cmd+shift+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "text-utilities.formatJson",
+        "key": "ctrl+shift+j",
+        "mac": "cmd+shift+j",
         "when": "editorTextFocus"
       }
     ],
@@ -114,6 +152,18 @@
         },
         {
           "command": "text-utilities.base64Decode"
+        },
+        {
+          "command": "text-utilities.sortLines"
+        },
+        {
+          "command": "text-utilities.removeDuplicateLines"
+        },
+        {
+          "command": "text-utilities.formatJson"
+        },
+        {
+          "command": "text-utilities.minifyJson"
         }
       ]
     },
@@ -122,7 +172,33 @@
         "id": "text-utilities",
         "label": "Text Utilities"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Text Utilities",
+      "properties": {
+        "textUtilities.dateFormat": {
+          "type": "string",
+          "default": "short",
+          "enum": ["short", "long", "iso"],
+          "enumDescriptions": [
+            "Short format (e.g., 1/14/2025)",
+            "Long format (e.g., January 14, 2025)",
+            "ISO format (e.g., 2025-01-14)"
+          ],
+          "description": "Format for inserted dates"
+        },
+        "textUtilities.uuidUppercase": {
+          "type": "boolean",
+          "default": false,
+          "description": "Generate UUIDs in uppercase"
+        },
+        "textUtilities.trimEmptyLines": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remove empty lines when trimming"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -23,7 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
     { command: 'text-utilities.insertUUID', handler: insertUUID },
     { command: 'text-utilities.countWords', handler: countWords },
     { command: 'text-utilities.base64Encode', handler: base64Encode },
-    { command: 'text-utilities.base64Decode', handler: base64Decode }
+    { command: 'text-utilities.base64Decode', handler: base64Decode },
+    { command: 'text-utilities.sortLines', handler: sortLines },
+    { command: 'text-utilities.sortLinesReverse', handler: sortLinesReverse },
+    { command: 'text-utilities.removeDuplicateLines', handler: removeDuplicateLines },
+    { command: 'text-utilities.trimLines', handler: trimLines },
+    { command: 'text-utilities.formatJson', handler: formatJson },
+    { command: 'text-utilities.minifyJson', handler: minifyJson },
+    { command: 'text-utilities.reverseText', handler: reverseText },
+    { command: 'text-utilities.numberLines', handler: numberLines }
   ];
 
   commands.forEach(({ command, handler }) => {
@@ -124,9 +132,25 @@ async function insertDate() {
   const editor = vscode.window.activeTextEditor;
   if (!editor) return;
 
-  const date = new Date().toLocaleDateString();
+  const config = vscode.workspace.getConfiguration('textUtilities');
+  const format = config.get<string>('dateFormat', 'short');
+  
+  const date = new Date();
+  let dateString: string;
+  
+  switch (format) {
+    case 'iso':
+      dateString = date.toISOString().split('T')[0];
+      break;
+    case 'long':
+      dateString = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      break;
+    default:
+      dateString = date.toLocaleDateString();
+  }
+  
   await editor.edit(editBuilder => {
-    editBuilder.insert(editor.selection.active, date);
+    editBuilder.insert(editor.selection.active, dateString);
   });
 }
 
@@ -154,7 +178,14 @@ async function insertUUID() {
   const editor = vscode.window.activeTextEditor;
   if (!editor) return;
 
-  const uuid = uuidv4();
+  const config = vscode.workspace.getConfiguration('textUtilities');
+  const uppercase = config.get('uuidUppercase', false);
+  
+  let uuid = uuidv4();
+  if (uppercase) {
+    uuid = uuid.toUpperCase();
+  }
+  
   await editor.edit(editBuilder => {
     editBuilder.insert(editor.selection.active, uuid);
   });
@@ -209,6 +240,153 @@ async function base64Decode() {
       vscode.window.showErrorMessage('Invalid Base64 string');
     }
   }
+}
+
+// New utility functions
+async function sortLines() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection.isEmpty ? undefined : selection);
+  
+  const lines = text.split('\n');
+  lines.sort((a, b) => a.localeCompare(b));
+  
+  await editor.edit(editBuilder => {
+    const range = selection.isEmpty ? 
+      new vscode.Range(0, 0, editor.document.lineCount - 1, editor.document.lineAt(editor.document.lineCount - 1).text.length) :
+      selection;
+    editBuilder.replace(range, lines.join('\n'));
+  });
+}
+
+async function sortLinesReverse() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection.isEmpty ? undefined : selection);
+  
+  const lines = text.split('\n');
+  lines.sort((a, b) => b.localeCompare(a));
+  
+  await editor.edit(editBuilder => {
+    const range = selection.isEmpty ? 
+      new vscode.Range(0, 0, editor.document.lineCount - 1, editor.document.lineAt(editor.document.lineCount - 1).text.length) :
+      selection;
+    editBuilder.replace(range, lines.join('\n'));
+  });
+}
+
+async function removeDuplicateLines() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection.isEmpty ? undefined : selection);
+  
+  const lines = text.split('\n');
+  const uniqueLines = [...new Set(lines)];
+  
+  await editor.edit(editBuilder => {
+    const range = selection.isEmpty ? 
+      new vscode.Range(0, 0, editor.document.lineCount - 1, editor.document.lineAt(editor.document.lineCount - 1).text.length) :
+      selection;
+    editBuilder.replace(range, uniqueLines.join('\n'));
+  });
+  
+  vscode.window.showInformationMessage(`Removed ${lines.length - uniqueLines.length} duplicate lines`);
+}
+
+async function trimLines() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection.isEmpty ? undefined : selection);
+  
+  const lines = text.split('\n').map(line => line.trim());
+  
+  await editor.edit(editBuilder => {
+    const range = selection.isEmpty ? 
+      new vscode.Range(0, 0, editor.document.lineCount - 1, editor.document.lineAt(editor.document.lineCount - 1).text.length) :
+      selection;
+    editBuilder.replace(range, lines.join('\n'));
+  });
+}
+
+async function formatJson() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection);
+  
+  if (text) {
+    try {
+      const parsed = JSON.parse(text);
+      const formatted = JSON.stringify(parsed, null, 2);
+      await editor.edit(editBuilder => {
+        editBuilder.replace(selection, formatted);
+      });
+    } catch (error) {
+      vscode.window.showErrorMessage('Invalid JSON format');
+    }
+  }
+}
+
+async function minifyJson() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection);
+  
+  if (text) {
+    try {
+      const parsed = JSON.parse(text);
+      const minified = JSON.stringify(parsed);
+      await editor.edit(editBuilder => {
+        editBuilder.replace(selection, minified);
+      });
+    } catch (error) {
+      vscode.window.showErrorMessage('Invalid JSON format');
+    }
+  }
+}
+
+async function reverseText() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection);
+  
+  if (text) {
+    const reversed = text.split('').reverse().join('');
+    await editor.edit(editBuilder => {
+      editBuilder.replace(selection, reversed);
+    });
+  }
+}
+
+async function numberLines() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) return;
+
+  const selection = editor.selection;
+  const text = editor.document.getText(selection.isEmpty ? undefined : selection);
+  
+  const lines = text.split('\n');
+  const numberedLines = lines.map((line, index) => `${index + 1}. ${line}`);
+  
+  await editor.edit(editBuilder => {
+    const range = selection.isEmpty ? 
+      new vscode.Range(0, 0, editor.document.lineCount - 1, editor.document.lineAt(editor.document.lineCount - 1).text.length) :
+      selection;
+    editBuilder.replace(range, numberedLines.join('\n'));
+  });
 }
 
 // This method is called when your extension is deactivated
