@@ -1,19 +1,126 @@
 {
-  "name": "my-vscode-extension",
-  "displayName": "My VS Code Extension",
-  "description": "A sample VS Code extension",
-  "version": "0.0.1",
+  "name": "text-utilities",
+  "displayName": "Text Utilities",
+  "description": "Useful text manipulation utilities for developers",
+  "version": "1.0.0",
+  "publisher": "jongson-won",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": ["Other"],
+  "categories": ["Other", "Formatters"],
+  "keywords": ["text", "utilities", "case", "conversion", "uuid", "base64", "transform"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jongson-Won/my-vscode-extension.git"
+  },
+  "homepage": "https://github.com/Jongson-Won/my-vscode-extension#readme",
+  "bugs": {
+    "url": "https://github.com/Jongson-Won/my-vscode-extension/issues"
+  },
+  "license": "MIT",
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "my-vscode-extension.helloWorld",
-        "title": "Hello World"
+        "command": "text-utilities.toUpperCase",
+        "title": "Transform to UPPERCASE"
+      },
+      {
+        "command": "text-utilities.toLowerCase",
+        "title": "Transform to lowercase"
+      },
+      {
+        "command": "text-utilities.toCamelCase",
+        "title": "Transform to camelCase"
+      },
+      {
+        "command": "text-utilities.toSnakeCase",
+        "title": "Transform to snake_case"
+      },
+      {
+        "command": "text-utilities.toKebabCase",
+        "title": "Transform to kebab-case"
+      },
+      {
+        "command": "text-utilities.insertDate",
+        "title": "Insert Current Date"
+      },
+      {
+        "command": "text-utilities.insertTime",
+        "title": "Insert Current Time"
+      },
+      {
+        "command": "text-utilities.insertDateTime",
+        "title": "Insert Current Date & Time"
+      },
+      {
+        "command": "text-utilities.insertUUID",
+        "title": "Insert UUID"
+      },
+      {
+        "command": "text-utilities.countWords",
+        "title": "Count Words"
+      },
+      {
+        "command": "text-utilities.base64Encode",
+        "title": "Base64 Encode"
+      },
+      {
+        "command": "text-utilities.base64Decode",
+        "title": "Base64 Decode"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "text-utilities.toUpperCase",
+        "key": "ctrl+shift+u",
+        "mac": "cmd+shift+u",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "text-utilities.toLowerCase",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "text-utilities",
+          "group": "1_modification"
+        }
+      ],
+      "text-utilities": [
+        {
+          "command": "text-utilities.toUpperCase"
+        },
+        {
+          "command": "text-utilities.toLowerCase"
+        },
+        {
+          "command": "text-utilities.toCamelCase"
+        },
+        {
+          "command": "text-utilities.toSnakeCase"
+        },
+        {
+          "command": "text-utilities.toKebabCase"
+        },
+        {
+          "command": "text-utilities.base64Encode"
+        },
+        {
+          "command": "text-utilities.base64Decode"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "text-utilities",
+        "label": "Text Utilities"
       }
     ]
   },
@@ -29,11 +136,15 @@
     "@types/vscode": "^1.74.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
     "eslint": "^9.9.1",
     "typescript": "^5.5.4",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
   }
 } 

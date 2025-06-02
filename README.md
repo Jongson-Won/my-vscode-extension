@@ -1,61 +1,86 @@
-# My VS Code Extension
+# Text Utilities
 
-이것은 VS Code extension 샘플 프로젝트입니다.
+A powerful VS Code extension that provides essential text manipulation utilities for developers.
 
-## 기능
+## Features
 
-이 extension은 다음과 같은 기능을 제공합니다:
+### Text Transformation
+- **Transform to UPPERCASE**: Convert selected text to uppercase
+- **Transform to lowercase**: Convert selected text to lowercase
+- **Transform to camelCase**: Convert selected text to camelCase format
+- **Transform to snake_case**: Convert selected text to snake_case format
+- **Transform to kebab-case**: Convert selected text to kebab-case format
 
-- `Hello World` 명령어 실행 시 메시지 박스를 표시합니다.
+### Date & Time Insertion
+- **Insert Current Date**: Insert today's date at cursor position
+- **Insert Current Time**: Insert current time at cursor position
+- **Insert Current Date & Time**: Insert full date and time at cursor position
 
-## 사용 방법
+### Developer Utilities
+- **Insert UUID**: Generate and insert a UUID v4 at cursor position
+- **Count Words**: Display word count, character count, and line count for selected text
+- **Base64 Encode**: Encode selected text to Base64
+- **Base64 Decode**: Decode selected Base64 text
 
-1. `Ctrl+Shift+P` (Mac: `Cmd+Shift+P`)를 눌러 명령 팔레트를 엽니다.
-2. `Hello World`를 입력하고 선택합니다.
-3. 메시지 박스가 표시됩니다.
+## Usage
 
-## 개발 방법
+### Using Commands
+1. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+2. Type "Text Utilities" to see all available commands
+3. Select the desired command
 
-### 설치
+### Using Keyboard Shortcuts
+- `Ctrl+Shift+U` / `Cmd+Shift+U`: Transform to UPPERCASE
+- `Ctrl+Shift+L` / `Cmd+Shift+L`: Transform to lowercase
 
-```bash
-npm install
-```
+### Using Context Menu
+1. Select text in the editor
+2. Right-click to open context menu
+3. Select "Text Utilities" submenu
+4. Choose the desired transformation
 
-### 실행
+## Examples
 
-1. VS Code에서 이 프로젝트를 엽니다.
-2. `F5`를 눌러 새로운 VS Code 창에서 extension을 실행합니다.
-3. 새 창에서 명령 팔레트를 열고 `Hello World` 명령을 실행합니다.
+### Text Case Transformations
+- `hello world` → `HELLO WORLD` (UPPERCASE)
+- `Hello World` → `hello world` (lowercase)
+- `hello world` → `helloWorld` (camelCase)
+- `HelloWorld` → `hello_world` (snake_case)
+- `hello world` → `hello-world` (kebab-case)
 
-### 빌드
+### Base64 Encoding/Decoding
+- `Hello World` → `SGVsbG8gV29ybGQ=` (Encode)
+- `SGVsbG8gV29ybGQ=` → `Hello World` (Decode)
 
-```bash
-npm run compile
-```
+## Requirements
 
-### 패키징
+VS Code version 1.74.0 or higher
 
-```bash
-npm install -g @vscode/vsce
-vsce package
-```
+## Extension Settings
 
-## 요구 사항
+This extension does not require any additional settings.
 
-- VS Code 1.74.0 이상
-- Node.js 16.x 이상
+## Known Issues
 
-## Extension 설정
+None at the moment. Please report issues on GitHub.
 
-이 extension은 현재 추가 설정을 제공하지 않습니다.
+## Release Notes
 
-## 알려진 문제
+### 1.0.0
 
-없음
+Initial release with the following features:
+- Text case transformations (UPPERCASE, lowercase, camelCase, snake_case, kebab-case)
+- Date and time insertion
+- UUID generation
+- Word counting
+- Base64 encoding/decoding
+- Context menu integration
+- Keyboard shortcuts
 
-## 릴리스 노트
+## Contributing
 
-### 0.0.1
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-초기 릴리스 
+## License
+
+This extension is released under the MIT License. 
