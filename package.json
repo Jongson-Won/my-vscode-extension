@@ -4,7 +4,7 @@
   "description": "Useful text manipulation utilities for developers",
   "version": "1.1.0",
   "publisher": "jongson-won",
-  "icon": "icon.png",
+  "icon": "icon.svg",
   "engines": {
     "vscode": "^1.74.0"
   },
