@@ -118,6 +118,10 @@ VS Code version 1.74.0 or higher
 
 None at the moment. Please report issues on GitHub.
 
+## Packaging
+
+Run `npm run package` to create a `.vsix` file for manual installation.
+
 ## Release Notes
 
 ### 1.1.0
